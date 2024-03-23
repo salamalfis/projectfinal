@@ -71,8 +71,7 @@ func (u *userServiceImpl) SignUp(ctx context.Context, userSignUp model.UserSignU
 		Username: userSignUp.Username,
 		Email:    userSignUp.Email,
 		DoB:      userSignUp.DoB,
-		// FirstName: userSignUp.FirstName,
-		// LastName:  userSignUp.LastName,
+
 	}
 
 	// encryption password

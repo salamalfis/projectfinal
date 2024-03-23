@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/salamalfis/projectfinal/internal/handler"
 	"github.com/salamalfis/projectfinal/internal/infrastructure"
 	"github.com/salamalfis/projectfinal/internal/model"
@@ -14,7 +14,6 @@ import (
 	"github.com/salamalfis/projectfinal/internal/service"
 	"github.com/salamalfis/projectfinal/pkg"
 	"github.com/salamalfis/projectfinal/pkg/helper"
-	"github.com/gin-gonic/gin"
 
 	_ "github.com/salamalfis/projectfinal/cmd/docs"
 
@@ -38,7 +37,7 @@ func main() {
 	// requirement technical:
 	// [x] middleware untuk recover ketika panic
 	// [x] mengecheck basic auth
-	assignment3()
+	server()
 }
 
 // Product:
@@ -56,7 +55,7 @@ func server() {
 
 		claim := model.StandardClaim{
 			Jti: fmt.Sprintf("%v", time.Now().UnixNano()),
-			Iss: "go-middleware",
+			Iss: "projectfinal",
 			Aud: "golang-006",
 			Sub: "public-token",
 			Exp: uint64(now.Add(time.Hour).Unix()),
@@ -96,29 +95,8 @@ func server() {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	g.Run(":3000")
+
+	
 }
 
-func assignment3() {
-	g := gin.Default()
 
-	data := map[string]any{}
-
-	go func() {
-		for {
-			// read json file
-			// update json file
-			data["water"] = rand.Int31n(100)
-			data["wind"] = rand.Int31n(100)
-			data["fire"] = rand.Int31n(100)
-			data["earth"] = rand.Int31n(100)
-			time.Sleep(15 * time.Second)
-		}
-	}()
-
-	g.GET("/data", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, map[string]any{
-			"status": data,
-		})
-	})
-	g.Run(":3030")
-}

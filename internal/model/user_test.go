@@ -14,3 +14,4 @@ func TestUserValidate(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 }
+
