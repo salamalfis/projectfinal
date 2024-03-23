@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/internal/infrastructure/mocks"
+	"github.com/salamalfis/projectfinal/internal/infrastructure/mocks"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/postgres"

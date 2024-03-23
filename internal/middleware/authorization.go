@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/pkg"
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/pkg/helper"
+	"github.com/salamalfis/projectfinal/pkg"
+	"github.com/salamalfis/projectfinal/pkg/helper"
 	"github.com/gin-gonic/gin"
 )
 

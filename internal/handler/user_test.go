@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/internal/model"
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/internal/service/mocks"
+	"github.com/salamalfis/projectfinal/internal/model"
+	"github.com/salamalfis/projectfinal/internal/service/mocks"
 )
 
 func TestUserSignUp(t *testing.T) {

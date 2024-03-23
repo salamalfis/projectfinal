@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/internal/model"
-	"github.com/Calmantara/go-kominfo-2024/go-middleware/internal/repository/mocks"
+	"github.com/salamalfis/projectfinal/internal/model"
+	"github.com/salamalfis/projectfinal/internal/repository/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
