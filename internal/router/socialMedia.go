@@ -15,11 +15,19 @@ type SocialMediaRouterImpl struct {
 	handler handler.SocialMediaHandler
 }
 
+func NewSocialMediaRouter(v *gin.RouterGroup, handler handler.SocialMediaHandler) SocialMediaRouter {
+	return &SocialMediaRouterImpl{
+		v:       v,
+		handler: handler,
+	}
+}
+
 func (u *SocialMediaRouterImpl) Mount() {
 	u.v.Use(middleware.CheckAuthBearer)
-	u.v.GET("/socialMedia", u.handler.GetSocialMedia)
-	u.v.POST("/socialMedia?user_id=id", u.handler.AddSocialMedia)
-	u.v.DELETE("/socialMedia/:id", u.handler.DeleteSocialMediaById)
-	u.v.PUT("/socialMedia/:id", u.handler.UpdateSocialMediaById)
-	u.v.GET("/socialMedia/:id", u.handler.GetSocialMediaById)
+	u.v.GET("/socialmedias", u.handler.GetSocialMedia)
+	u.v.POST("/socialmedias", u.handler.AddSocialMedia)
+	u.v.POST("/socialmedias?user_id=id", u.handler.AddSocialMedia)
+	u.v.DELETE("/socialmedias/:socialMediaId", u.handler.DeleteSocialMediaById)
+	u.v.PUT("/socialmedias/:socialMediaId", u.handler.UpdateSocialMediaById)
+
 }

@@ -3,10 +3,10 @@ CREATE TABLE users(
     username varchar(255) not null unique, 
     email varchar(255) not null unique,  
     password varchar(255) not null,
-    dob date, 
+    Age int not null,
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
-    deleted_at timestamp 
+
 );
 
 CREATE TABLE photos(
@@ -14,10 +14,11 @@ CREATE TABLE photos(
     title varchar(255) not null, 
     url text not null,  
     caption text,
+    photo_url text not null,
     user_id  int not null, 
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
-    deleted_at timestamp, 
+ 
     constraint fk_photo_user_id 
         foreign key (user_id) 
         references users(id)
@@ -28,9 +29,10 @@ CREATE TABLE comments(
     message text not null, 
     user_id  int not null, 
     photo_id  int not null, 
+    message text not null,
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
-    deleted_at timestamp, 
+   
     constraint fk_comments_photo_id 
         foreign key (photo_id) 
         references photos(id),
@@ -42,11 +44,11 @@ CREATE TABLE comments(
 CREATE TABLE social_medias(
     id serial primary key not null,
     name varchar(255) not null, 
-    url text not null, 
+    social_media_url text not null, 
     user_id  int not null, 
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
-    deleted_at timestamp, 
+    
     constraint fk_social_medias_user_id 
         foreign key (user_id) 
         references users(id)

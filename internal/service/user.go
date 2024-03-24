@@ -14,6 +14,8 @@ type UserService interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	GetUsersById(ctx context.Context, id uint64) (model.User, error)
 	DeleteUsersById(ctx context.Context, id uint64) (model.User, error)
+	UpdateUsersById(ctx context.Context, id uint64) (model.User, error)
+	UserLogin(ctx context.Context, userLogin model.UserLogin) (model.User, error)
 
 	// activity
 	SignUp(ctx context.Context, userSignUp model.UserSignUp) (model.User, error)
@@ -65,13 +67,31 @@ func (u *userServiceImpl) DeleteUsersById(ctx context.Context, id uint64) (model
 	return user, err
 }
 
+func (u *userServiceImpl) UpdateUsersById(ctx context.Context, id uint64) (model.User, error) {
+	user, err := u.repo.GetUsersByID(ctx, id)
+	if err != nil {
+		return model.User{}, err
+	}
+	// if user doesn't exist, return
+	if user.ID == 0 {
+		return model.User{}, nil
+	}
+
+	// update user by id
+	err = u.repo.UpdateUsersByID(ctx, id)
+	if err != nil {
+		return model.User{}, err
+	}
+
+	return user, err
+}
+
 func (u *userServiceImpl) SignUp(ctx context.Context, userSignUp model.UserSignUp) (model.User, error) {
 	// assumption: semua user adalah user baru
 	user := model.User{
 		Username: userSignUp.Username,
 		Email:    userSignUp.Email,
-		DoB:      userSignUp.DoB,
-
+		Age:      userSignUp.Age,
 	}
 
 	// encryption password
@@ -108,9 +128,27 @@ func (u *userServiceImpl) GenerateUserAccessToken(ctx context.Context, user mode
 		StandardClaim: claim,
 		UserID:        user.ID,
 		Username:      user.Username,
-		Dob:           user.DoB,
+		Age:           user.Age,
 	}
 
 	token, err = helper.GenerateToken(userClaim)
 	return
+}
+
+func (u *userServiceImpl) UserLogin(ctx context.Context, userlogin model.UserLogin) (model.User, error) {
+	user, err := u.repo.GetUsersByEmail(ctx, userlogin.Email)
+	if err != nil {
+		return model.User{}, err
+	}
+	if user.ID == 0 {
+		return model.User{}, err
+	}
+
+	isValidLogin := helper.CheckPasswordHash(userlogin.Password, user.Password)
+	if !isValidLogin {
+		return model.User{}, err
+	}
+
+	return user, err
+
 }

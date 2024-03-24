@@ -15,13 +15,19 @@ type PhotoRouterImpl struct {
 	handler handler.PhotoHandler
 }
 
-func (u *PhotoRouterImpl) Mount() {
-	u.v.Use(middleware.CheckAuthBearer)
-	u.v.GET("/photo", u.handler.GetPhotos)
-	u.v.POST("/photo?user_id=id", u.handler.AddPhotos)
-	u.v.DELETE("/photo/:id", u.handler.DeletePhotosById)
-	u.v.PUT("/photo/:id", u.handler.UpdatePhotosById)
-	u.v.GET("/photo/:id", u.handler.GetPhotosById)
+func NewPhotoRouter(v *gin.RouterGroup, handler handler.PhotoHandler) PhotoRouter {
+	return &PhotoRouterImpl{
+		v:       v,
+		handler: handler,
+	}
 }
 
-// Path: internal/router/router.go
+func (u *PhotoRouterImpl) Mount() {
+	u.v.Use(middleware.CheckAuthBearer)
+	u.v.GET("/photos", u.handler.GetPhotos)
+	u.v.POST("/photos", u.handler.AddPhotos)
+	u.v.POST("/photos?user_id=id", u.handler.AddPhotos)
+	u.v.DELETE("/photos/:id", u.handler.DeletePhotosById)
+	u.v.PUT("/photos/:photoId", u.handler.UpdatePhotosById)
+	u.v.GET("/photos/:photoId", u.handler.GetPhotosById)
+}

@@ -2,9 +2,11 @@ package helper
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -57,6 +59,11 @@ func ValidateToken(token string) (claim jwt.MapClaims, err error) {
 	return
 }
 
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 func GenerateHash(in string) (out string, err error) {
 	outByte, err := bcrypt.GenerateFromPassword([]byte(in), bcrypt.DefaultCost)
 	if err != nil {
@@ -64,4 +71,17 @@ func GenerateHash(in string) (out string, err error) {
 		return
 	}
 	return string(outByte), err
+}
+
+func GetUserID(ctx *gin.Context) (uint64, error) {
+	userID, exist := ctx.Get("user_id")
+	if !exist {
+		return 0, errors.New("cannot get payload in access token")
+	}
+	Iduser := userID.(uint64)
+	user := uint64(Iduser)
+	if user == 0 {
+		return 0, errors.New("cannot get user id")
+	}
+	return user, nil
 }

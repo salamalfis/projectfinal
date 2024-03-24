@@ -1,66 +1,66 @@
 package service
 
 import (
-	//"net/http"
-	//"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/salamalfis/projectfinal/internal/model"
 	"github.com/salamalfis/projectfinal/internal/repository"
-	//"github.com/salamalfis/projectfinal/pkg"
 )
 
 type PhotoService interface {
 	// photos
 	GetPhotos(ctx *gin.Context) (model.Photo, error)
-	GetPhotosById(ctx *gin.Context)
-	DeletePhotosById(ctx *gin.Context)
-	UpdatePhotosById(ctx *gin.Context)
-	AddPhotos(ctx *gin.Context)
+	GetPhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
+	DeletePhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
+	UpdatePhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
+	AddPhotos(ctx *gin.Context) (model.User, error)
 }
 
 type photoServiceImpl struct {
 	repo repository.PhotoQuery
 }
 
-// func (u *photoServiceImpl) GetPhotos(ctx *gin.Context) (model.Photo, error) {
-// 	// photo, err := u.repo.GetPhotos(ctx)
-// 	// if err != nil {
-// 	// 	ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: "Failed to get photos", Error: err.Error()})
-// 	// 	return nil, err
-// 	// }
-// 	// return photo, nil
-
-// }
-
-func (u *photoServiceImpl) GetPhotosById(ctx *gin.Context) {
-	// id, err := strconv.Atoi(ctx.Param("id"))
-	// if err != nil {
-	// 	ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: err.Error()})
-	// 	return
-	// }
+func NewPhotoService(repo repository.PhotoQuery) PhotoService {
+	return &photoServiceImpl{
+		repo: repo,
+	}
 }
 
-func (u *photoServiceImpl) DeletePhotosById(ctx *gin.Context) {
-	// id, err := strconv.Atoi(ctx.Param("id"))
-	// if err != nil {
-	// 	ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: err.Error()})
-	// 	return
-	// }
+func (s *photoServiceImpl) AddPhotos(ctx *gin.Context, photo model.Photo) (model.PhotoResCreate, error) {
+	err := s.repo.AddPhotos(ctx, photo)
+	if err != nil {
+		return model.PhotoResCreate{}, err
+	}
+	return model.PhotoResCreate{}, nil
 }
 
-func (u *photoServiceImpl) UpdatePhotosById(ctx *gin.Context) {
-	// id, err := strconv.Atoi(ctx.Param("id"))
-	// if err != nil {
-	// 	ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: err.Error()})
-	// 	return
-	// }
+func (s *photoServiceImpl) GetPhotos(ctx *gin.Context, id uint64) ([]model.Photo, error) {
+	photos, err := s.repo.GetPhotos(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return photos, nil
 }
 
-func (u *photoServiceImpl) AddPhotos(ctx *gin.Context) {
-	// photo := model.Photo{}
-	// if err := ctx.ShouldBindJSON(&photo); err != nil {
-	// 	ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: err.Error()})
-	// 	return
-	// }
+func (s *photoServiceImpl) GetPhotosById(ctx *gin.Context, id uint64) (model.Photo, error) {
+	photo, err := s.repo.GetPhotosById(ctx, id)
+	if err != nil {
+		return model.Photo{}, err
+	}
+	return photo, nil
+}
+
+func (s *photoServiceImpl) DeletePhotosById(ctx *gin.Context, id uint64) (model.Photo, error) {
+	photo, err := s.repo.DeletePhotosById(ctx, id)
+	if err != nil {
+		return model.Photo{}, err
+	}
+	return photo, nil
+}
+
+func (s *photoServiceImpl) UpdatePhotosById(ctx *gin.Context, id uint64) (model.Photo, error) {
+	photo, err := s.repo.UpdatePhotosById(ctx, id)
+	if err != nil {
+		return model.Photo{}, err
+	}
+	return photo, nil
 }

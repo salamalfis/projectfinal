@@ -17,9 +17,8 @@ import (
 	"github.com/salamalfis/projectfinal/pkg/helper"
 
 	_ "github.com/salamalfis/projectfinal/cmd/docs"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	// swaggerFiles "github.com/swaggo/files"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title			GO DTS USER API DUCUMENTATION
@@ -93,7 +92,7 @@ func server() {
 	// mount
 	userRouter.Mount()
 	// swagger
-	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	//g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// comments
 	commentGroup := g.Group("/comments")
@@ -118,11 +117,6 @@ func server() {
 	socialMediaHdl := handler.NewSocialMediaHandler(socialMediaSvc)
 	socialMediaRouter := router.NewSocialMediaRouter(socialMediaGroup, socialMediaHdl)
 	socialMediaRouter.Mount()
-	
-
-
-
-
 
 	g.Run(":3000")
 

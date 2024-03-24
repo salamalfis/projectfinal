@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 // iss (issuer): Issuer of the JWT
 // sub (subject): Subject of the JWT (the user)
 // aud (audience): Recipient for which the JWT is intended
@@ -22,7 +20,7 @@ type StandardClaim struct {
 
 type AccessClaim struct {
 	StandardClaim
-	UserID   uint64    `json:"user_id"`
-	Username string    `json:"username"`
-	Dob      time.Time `json:"dob"`
+	UserID   uint64 `json:"user_id"`
+	Username string `json:"username"`
+	Age      int    `json:"age"`
 }

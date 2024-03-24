@@ -22,7 +22,10 @@ func NewUserRouter(v *gin.RouterGroup, handler handler.UserHandler) UserRouter {
 func (u *userRouterImpl) Mount() {
 	// activity
 	// /users/sign-up
-	u.v.POST("/sign-up", u.handler.UserSignUp)
+	u.v.POST("/register", u.handler.UserSignUp)
+
+	// /users/login
+	u.v.POST("/login", u.handler.UserLogin)
 
 	// users
 	u.v.Use(middleware.CheckAuthBearer)
