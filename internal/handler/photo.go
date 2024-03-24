@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"net/http"
-	"strconv"
+	//"net/http"
+	// "strconv"
 
-	"github.com/salamalfis/projectfinal/internal/middleware"
+	// "github.com/salamalfis/projectfinal/internal/middleware"
+	"github.com/gin-gonic/gin"
 	//"github.com/salamalfis/projectfinal/internal/model"
 	"github.com/salamalfis/projectfinal/internal/service"
-	"github.com/salamalfis/projectfinal/pkg"
-	"github.com/gin-gonic/gin"
+	//"github.com/salamalfis/projectfinal/pkg"
 )
 
 // PhotoHandler ...
@@ -25,15 +25,15 @@ type photoHandlerImpl struct {
 	svc service.PhotoService
 }
 
-func NewPhotoHandler(svc service.PhotoService) PhotoHandler {
-	return &photoHandlerImpl{
-		svc: svc,
-	}
-}
+// func NewPhotoHandler(svc service.PhotoService) PhotoHandler {
+// 	// return &photoHandlerImpl{
+// 	// 	svc: svc,
+// 	// }
+// }
 
 // GetPhotos godoc
 // @Summary Show photos list
-// @Description will fetch 3rd party server to get photos data
+// @Description will fetch photos data from the database
 // @Tags photos
 // @Accept json
 // @Produce json
@@ -43,12 +43,25 @@ func NewPhotoHandler(svc service.PhotoService) PhotoHandler {
 // @Failure 500 {object} pkg.ErrorResponse
 // @Router /photos [get]
 func (p *photoHandlerImpl) GetPhotos(ctx *gin.Context) {
-	p.svc.GetPhotos(ctx)
+	// photos, err := p.svc.GetPhotosFromDB()
+	// if err != nil {
+	// 	// handle error
+	// 	ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{
+	// 		Message: "Failed to get photos",
+	// 		Error:   err.Error(),
+	// 	})
+	// 	return
+	// }
+
+	// ctx.JSON(http.StatusOK, photos)
 }
 
-// GetPhotosById godoc
-// @Summary Show photos detail
-// @Description will fetch 3rd party server to get photos data to get detail photo
+// GetPhotosFromDB retrieves photos from the database
+// func (s *PhotoService) GetPhotosFromDB() ([]model.Photo, error) {
+// 	// implementation to retrieve photos from the database
+
+// }
+
 // @Tags photos
 // @Accept json
 // @Produce json

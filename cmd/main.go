@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"net/http"
 	"time"
 
@@ -94,9 +95,35 @@ func server() {
 	// swagger
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	// comments
+	commentGroup := g.Group("/comments")
+	commentRepo := repository.NewCommentQuery(gorm)
+	commentSvc := service.NewCommentService(commentRepo)
+	commentHdl := handler.NewCommentsHandler(commentSvc)
+	commentRouter := router.NewCommentsRouter(commentGroup, commentHdl)
+	commentRouter.Mount()
+
+	// Photo
+	photoGroup := g.Group("/photos")
+	photoRepo := repository.NewPhotoQuery(gorm)
+	photoSvc := service.NewPhotoService(photoRepo)
+	photoHdl := handler.NewPhotoHandler(photoSvc)
+	photoRouter := router.NewPhotoRouter(photoGroup, photoHdl)
+	photoRouter.Mount()
+
+	// Social Media
+	socialMediaGroup := g.Group("/social-media")
+	socialMediaRepo := repository.NewSocialMediaQuery(gorm)
+	socialMediaSvc := service.NewSocialMediaService(socialMediaRepo)
+	socialMediaHdl := handler.NewSocialMediaHandler(socialMediaSvc)
+	socialMediaRouter := router.NewSocialMediaRouter(socialMediaGroup, socialMediaHdl)
+	socialMediaRouter.Mount()
+	
+
+
+
+
+
 	g.Run(":3000")
 
-	
 }
-
-

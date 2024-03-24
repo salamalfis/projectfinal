@@ -1,20 +1,20 @@
 package handler
 
 import (
+	"net/http"
+	"strconv"
 
-	//"github.com/salamalfis/projectfinal/internal/middleware"
-	//"github.com/salamalfis/projectfinal/internal/model"
-	"github.com/salamalfis/projectfinal/internal/service"
-	//"github.com/salamalfis/projectfinal/pkg"
 	"github.com/gin-gonic/gin"
+	"github.com/salamalfis/projectfinal/internal/service"
+	"github.com/salamalfis/projectfinal/pkg"
 )
 
 type CommentsHandler interface {
-	GetComments(c *gin.Context)
-	AddComments(c *gin.Context)
-	DeleteCommentsById(c *gin.Context)
-	UpdateCommentsById(c *gin.Context)
-	GetCommentsById(c *gin.Context)
+	GetComments(ctx *gin.Context)
+	CreateComments(ctx *gin.Context)
+	DeleteCommentsById(ctx *gin.Context)
+	UpdateCommentsById(ctx *gin.Context)
+	GetCommentsById(ctx *gin.Context)
 }
 
 type commentsHandlerImpl struct {
@@ -26,3 +26,45 @@ func NewCommentsHandler(svc service.CommentsService) CommentsHandler {
 		svc: svc,
 	}
 }
+
+func (h *commentsHandlerImpl) GetComments(ctx *gin.Context) {
+	comment, err := h.svc.GetComments(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, comment)
+}
+
+func (h *commentsHandlerImpl) CreateComments(ctx *gin.Context) {
+	comment, err := h.svc.CreateComments(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, comment)
+}
+
+func (h *commentsHandlerImpl) DeleteCommentsById(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if id == 0 || err != nil {
+		ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: "invalid id"})
+		return
+	}
+	comment, err := h.svc.DeleteCommentsById(ctx, uint64(id))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, comment)
+
+}
+
+func (h *commentsHandlerImpl) UpdateCommentsById(ctx *gin.Context) {
+	
+}
+
+func (h *commentsHandlerImpl) GetCommentsById(ctx *gin.Context) {
+	
+}
+

@@ -11,7 +11,7 @@ import (
 type UserQuery interface {
 	GetUsers(ctx context.Context) ([]model.User, error)
 	GetUsersByID(ctx context.Context, id uint64) (model.User, error)
-
+	
 	DeleteUsersByID(ctx context.Context, id uint64) error
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
 }
