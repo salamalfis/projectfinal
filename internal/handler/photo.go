@@ -75,7 +75,7 @@ func (h *photoHandlerImpl) AddPhotos(ctx *gin.Context) {
 	photo.Url = data.Url
 	photo.Caption = data.Caption
 
-	photoRes, err := h.svc.AddPhotos(photo)
+	photoRes, err := h.svc.AddPhotos(ctx, photo)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
 		return
@@ -98,7 +98,19 @@ func (h *photoHandlerImpl) AddPhotos(ctx *gin.Context) {
 // @Router /photos [get]
 
 func (h *photoHandlerImpl) GetPhotos(ctx *gin.Context) {
-	photos, err := h.svc.GetPhotos()
+	id := ctx.Request.URL.Query().Get("userId")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, pkg.ErrorResponse{Message: "userId is required"})
+		return
+	}
+
+	iduser, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
+		return
+	}
+
+	photos, err := h.svc.GetPhotos(ctx, uint64(iduser))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
 		return
@@ -207,7 +219,7 @@ func (h *photoHandlerImpl) UpdatePhotosById(ctx *gin.Context) {
 	photoupdate.Url = data.Url
 	photoupdate.Caption = data.Caption
 
-	photoRes, err := h.svc.UpdatePhotosById(ctx, photoupdate.ID)
+	photoRes, err := h.svc.UpdatePhotosById(ctx, photoupdate.ID, photoupdate)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, pkg.ErrorResponse{Message: err.Error()})
 		return

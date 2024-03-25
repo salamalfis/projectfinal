@@ -24,10 +24,10 @@ func NewSocialMediaRouter(v *gin.RouterGroup, handler handler.SocialMediaHandler
 
 func (u *SocialMediaRouterImpl) Mount() {
 	u.v.Use(middleware.CheckAuthBearer)
-	u.v.GET("/socialmedias", u.handler.GetSocialMedia)
-	u.v.POST("/socialmedias", u.handler.AddSocialMedia)
-	u.v.POST("/socialmedias?user_id=id", u.handler.AddSocialMedia)
-	u.v.DELETE("/socialmedias/:socialMediaId", u.handler.DeleteSocialMediaById)
-	u.v.PUT("/socialmedias/:socialMediaId", u.handler.UpdateSocialMediaById)
+	u.v.POST("", u.handler.AddSocialMedia)
+	u.v.GET("", u.handler.GetSocialMedia)
+	u.v.GET("/:socialMediaId", u.handler.GetSocialMediaById)
+	u.v.PUT("/:socialMediaId", u.handler.UpdateSocialMediaById)
+	u.v.DELETE("/:socialMediaId", u.handler.DeleteSocialMediaById)
 
 }

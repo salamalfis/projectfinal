@@ -24,10 +24,10 @@ func NewPhotoRouter(v *gin.RouterGroup, handler handler.PhotoHandler) PhotoRoute
 
 func (u *PhotoRouterImpl) Mount() {
 	u.v.Use(middleware.CheckAuthBearer)
-	u.v.GET("/photos", u.handler.GetPhotos)
-	u.v.POST("/photos", u.handler.AddPhotos)
-	u.v.POST("/photos?user_id=id", u.handler.AddPhotos)
-	u.v.DELETE("/photos/:id", u.handler.DeletePhotosById)
-	u.v.PUT("/photos/:photoId", u.handler.UpdatePhotosById)
-	u.v.GET("/photos/:photoId", u.handler.GetPhotosById)
+	u.v.GET("", u.handler.GetPhotos)
+	u.v.POST("", u.handler.AddPhotos)
+	u.v.POST("/?user_id=id", u.handler.AddPhotos)
+	u.v.DELETE("/:id", u.handler.DeletePhotosById)
+	u.v.PUT("/:photoId", u.handler.UpdatePhotosById)
+	u.v.GET("/:photoId", u.handler.GetPhotosById)
 }

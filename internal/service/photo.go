@@ -8,11 +8,11 @@ import (
 
 type PhotoService interface {
 	// photos
-	GetPhotos(ctx *gin.Context) (model.Photo, error)
+	GetPhotos(ctx *gin.Context, id uint64) ([]model.Photo, error)
 	GetPhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
-	DeletePhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
-	UpdatePhotosById(ctx *gin.Context, id uint64) (model.Photo, error)
-	AddPhotos(ctx *gin.Context) (model.User, error)
+	DeletePhotosById(ctx *gin.Context, id uint64) error
+	UpdatePhotosById(ctx *gin.Context, id uint64, photo model.Photo) (model.PhotoUpdate, error)
+	AddPhotos(ctx *gin.Context, photo model.Photo) (model.PhotoResCreate, error)
 }
 
 type photoServiceImpl struct {
@@ -49,18 +49,16 @@ func (s *photoServiceImpl) GetPhotosById(ctx *gin.Context, id uint64) (model.Pho
 	return photo, nil
 }
 
-func (s *photoServiceImpl) DeletePhotosById(ctx *gin.Context, id uint64) (model.Photo, error) {
-	photo, err := s.repo.DeletePhotosById(ctx, id)
-	if err != nil {
-		return model.Photo{}, err
-	}
-	return photo, nil
+func (s *photoServiceImpl) DeletePhotosById(ctx *gin.Context, id uint64) error {
+	err := s.repo.DeletePhotosById(ctx, id)
+
+	return err
 }
 
-func (s *photoServiceImpl) UpdatePhotosById(ctx *gin.Context, id uint64) (model.Photo, error) {
-	photo, err := s.repo.UpdatePhotosById(ctx, id)
+func (s *photoServiceImpl) UpdatePhotosById(ctx *gin.Context, id uint64, photo model.Photo) (model.PhotoUpdate, error) {
+	err := s.repo.UpdatePhotosById(ctx, id, photo)
 	if err != nil {
-		return model.Photo{}, err
+		return model.PhotoUpdate{}, err
 	}
-	return photo, nil
+	return model.PhotoUpdate{}, nil
 }

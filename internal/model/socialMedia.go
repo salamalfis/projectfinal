@@ -1,23 +1,48 @@
 package model
 
-import(
+import (
 	"time"
+
 	"gorm.io/gorm"
 )
 
 type SocialMedia struct {
-	ID		uint   `gorm:"primaryKey;type:bigint" json:"id"`
-	Name	string `gorm:"not null;type:varchar(100)" json:"name"`
-	Url		string `gorm:"not null;type:varchar(200)" json:"url"`
-	User_id uint `gorm:"not null;type:bigint" json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"-" gorm:"column:deleted_at"`
+	ID             uint64    `json:"id"`
+	UserId         uint64    `json:"user_id"`
+	Name           string    `json:"name"`
+	SocialMediaUrl string    `json:"social_media_url"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	DeletedAt      gorm.DeletedAt
 }
 
-type DefaultColumnSocialMedia struct {
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"column:deleted_at"`
+type NewSocialMedia struct {
+	Name           string `json:"name" validate:"required"`
+	SocialMediaUrl string `json:"social_media_url" validate:"required"`
 }
 
+type CreateSocialMediaRes struct {
+	ID             uint64    `json:"id"`
+	UserId         uint64    `json:"user_id"`
+	Name           string    `json:"name"`
+	SocialMediaUrl string    `json:"social_media_url"`
+	CreatedAt      time.Time `json:"created_at"`
+}
+
+type UpdateSocialMediaRes struct {
+	ID             uint64    `json:"id"`
+	UserId         uint64    `json:"user_id"`
+	Name           string    `json:"name"`
+	SocialMediaUrl string    `json:"social_media_url"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+type SocialMediaView struct {
+	ID             uint64    `json:"id"`
+	UserId         uint64    `json:"user_id"`
+	Name           string    `json:"name"`
+	SocialMediaUrl string    `json:"social_media_url"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	User           UserItem  `json:"user" gorm:"foreignKey:UserId;references:ID"`
+}

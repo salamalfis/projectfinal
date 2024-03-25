@@ -94,14 +94,6 @@ func server() {
 	// swagger
 	//g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// comments
-	commentGroup := g.Group("/comments")
-	commentRepo := repository.NewCommentQuery(gorm)
-	commentSvc := service.NewCommentService(commentRepo)
-	commentHdl := handler.NewCommentsHandler(commentSvc)
-	commentRouter := router.NewCommentsRouter(commentGroup, commentHdl)
-	commentRouter.Mount()
-
 	// Photo
 	photoGroup := g.Group("/photos")
 	photoRepo := repository.NewPhotoQuery(gorm)
@@ -110,8 +102,16 @@ func server() {
 	photoRouter := router.NewPhotoRouter(photoGroup, photoHdl)
 	photoRouter.Mount()
 
+	// comments
+	commentGroup := g.Group("/comments")
+	commentRepo := repository.NewCommentQuery(gorm)
+	commentSvc := service.NewCommentService(commentRepo)
+	commentHdl := handler.NewCommentsHandler(commentSvc, photoSvc)
+	commentRouter := router.NewCommentsRouter(commentGroup, commentHdl)
+	commentRouter.Mount()
+
 	// Social Media
-	socialMediaGroup := g.Group("/social-media")
+	socialMediaGroup := g.Group("/socialmedias")
 	socialMediaRepo := repository.NewSocialMediaQuery(gorm)
 	socialMediaSvc := service.NewSocialMediaService(socialMediaRepo)
 	socialMediaHdl := handler.NewSocialMediaHandler(socialMediaSvc)

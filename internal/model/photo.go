@@ -57,3 +57,28 @@ type UpdatePhotosById struct {
 	UserId    uint64    `json:"user_id"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type PhotoUpdate struct {
+	ID        uint32    `json:"id"`
+	Title     string    `json:"title"`
+	Caption   string    `json:"caption"`
+	PhotoUrl  string    `json:"photo_url"`
+	UserId    uint32    `json:"user_id"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type PostComment struct {
+	ID       uint64    `json:"id"`
+	UserId   uint64    `json:"user_id"`
+	Message  string    `json:"message"`
+	PhotoId  uint64    `json:"photo_id"`
+	CreateAt time.Time `json:"created_at"`
+}
+
+type PhotoItem struct {
+	ID       uint64 `json:"id"`
+	Title    string `json:"title"`
+	Caption  string `json:"caption"`
+	PhotoUrl string `json:"photo_url"`
+	UserId   uint64 `json:"user_id"`
+}

@@ -28,7 +28,7 @@ type photoQueryImpl struct {
 	db infrastructure.GormPostgres
 }
 
-func NewphotoQueryImpl(db infrastructure.GormPostgres) PhotoQuery {
+func NewPhotoQuery(db infrastructure.GormPostgres) PhotoQuery {
 	return &photoQueryImpl{db: db}
 }
 
